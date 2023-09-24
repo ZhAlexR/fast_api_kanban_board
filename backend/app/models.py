@@ -1,7 +1,9 @@
 from sqlalchemy import Column, String, Integer, Table, ForeignKey
 from sqlalchemy.orm import relationship
 
-from beckend.app.database import Base
+from backend.app.database import Base
+
+metadata = Base.metadata
 
 role_permission_association = Table(
     "role_permission",

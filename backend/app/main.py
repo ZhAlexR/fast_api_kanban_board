@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from beckend.app import models
-from beckend.app.database import engine
+from backend.app import models
+from backend.app.database import engine
 
 app = FastAPI()
 
