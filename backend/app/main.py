@@ -4,7 +4,6 @@ from sqlalchemy.orm import Session
 from starlette import status
 
 from backend.app import models
-from backend.app.database import engine
 from backend.app.dependencies import get_db
 from backend.app.schemas import RoleCreate, PermissionCreate, PermissionList, Role
 
@@ -13,8 +12,6 @@ app = FastAPI()
 origins = ["http://localhost:3000"]
 
 app.add_middleware(CORSMiddleware, allow_origins=origins)
-
-models.Base.metadata.create_all(bind=engine)
 
 
 @app.post("/role/", status_code=status.HTTP_201_CREATED)
