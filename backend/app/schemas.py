@@ -14,7 +14,7 @@ class PermissionList(PermissionBase):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class RoleBase(BaseModel):
@@ -30,18 +30,17 @@ class Role(RoleBase):
     permissions: List[PermissionList] = []
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class UserBase(BaseModel):
     name: constr(min_length=1, max_length=255)
     surname: constr(min_length=1, max_length=255)
     email: EmailStr
-    password: constr(min_length=1)
 
 
 class UserCreate(UserBase):
-    pass
+    password: constr(min_length=1)
 
 
 class User(UserBase):
@@ -49,4 +48,4 @@ class User(UserBase):
     role: Optional[Role] = None
 
     class Config:
-        orm_mode = True
+        from_attributes = True
