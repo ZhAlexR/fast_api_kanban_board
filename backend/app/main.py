@@ -5,7 +5,15 @@ from starlette import status
 
 from backend.app import models
 from backend.app.dependencies import get_db
-from backend.app.schemas import RoleCreate, PermissionCreate, PermissionList, Role
+from backend.app.schemas import (
+    RoleCreate,
+    PermissionCreate,
+    PermissionList,
+    Role,
+    UserCreate,
+    User,
+)
+from backend.app.services.security import hash_password
 
 app = FastAPI()
 
@@ -54,3 +62,17 @@ def create_permission(request: PermissionCreate, db: Session = Depends(get_db)):
 def list_permission(db: Session = Depends(get_db)):
     permission_list = db.query(models.Permission).all()
     return permission_list
+
+
+@app.post("/user/", status_code=status.HTTP_201_CREATED, response_model=User)
+def create_user(request: UserCreate, db: Session = Depends(get_db)):
+    hashed_password = hash_password(request.password)
+
+    user_data = dict(request)
+    user_data["password"] = hashed_password
+
+    new_user = models.User(**user_data)
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+    return new_user
