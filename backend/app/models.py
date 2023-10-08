@@ -76,7 +76,7 @@ class User(Base):
     surname = Column(String(length=63))
     email = Column(String, nullable=False, unique=True)
     password = Column(String, nullable=False)
-    team_id = Column(Integer, ForeignKey("teams.id"))
+    team_id = Column(Integer, ForeignKey("teams.id"), default=None)
 
     team = relationship("Team", back_populates="members")
     role = relationship("Role", uselist=False, back_populates="user")
@@ -102,7 +102,7 @@ class Team(Base):
         "Board", secondary=board_team_association, back_populates="teams"
     )
     projects = relationship(
-        "Projects", secondary=team_project_association, back_populates="teams"
+        "Project", secondary=team_project_association, back_populates="teams"
     )
 
 
@@ -147,9 +147,7 @@ class Task(Base):
 
     owner_id = Column(Integer, ForeignKey("users.id"))
     assigned_id = Column(Integer, ForeignKey("users.id"), default=None)
-    owner = relationship(
-        "User", back_populates="owned_tasks", foreign_keys=str(owner_id)
-    )
+    owner = relationship("User", back_populates="owned_tasks", foreign_keys=[owner_id])
     assigned = relationship(
-        "User", back_populates="assigned_tasks", foreign_keys=str(assigned_id)
+        "User", back_populates="assigned_tasks", foreign_keys=[assigned_id]
     )
