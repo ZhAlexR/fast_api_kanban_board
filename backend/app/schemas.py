@@ -1,5 +1,9 @@
-from pydantic import BaseModel, constr, EmailStr
+from datetime import datetime, timedelta, date
+
+from pydantic import BaseModel, constr, EmailStr, validator, field_validator
 from typing import List, Optional
+
+from backend.app.models import TaskPriority
 
 
 class PermissionBase(BaseModel):
@@ -45,7 +49,69 @@ class UserCreate(UserBase):
 
 class User(UserBase):
     id: int
-    role: Optional[Role] = None
+    role: Optional[Role]
 
     class Config:
         from_attributes = True
+
+
+class UserList(BaseModel):
+    name: constr(min_length=1, max_length=255)
+    email: EmailStr
+    role: Optional[Role]
+
+
+class TeamBase(BaseModel):
+    name: str
+    description: str
+
+
+class TeamCreate(TeamBase):
+    members: Optional[int]
+    boards: Optional[int]
+    projects: Optional[int]
+
+
+class Board(BaseModel):
+    name: str
+    description: str
+
+
+class BoardCreate(Board):
+    teams: Optional[int]
+    projects: Optional[int]
+
+
+class BoardList(BaseModel):
+    id: int
+    name: str
+
+
+class ProjectBase(BaseModel):
+    name: str
+    description: str
+
+
+class ProjectCreate(ProjectBase):
+    boards: Optional[int]
+    teams: Optional[int]
+
+
+class TaskBase(BaseModel):
+    name: str
+    description: str
+
+
+class TaskCreate(TaskBase):
+    expired_at: str
+    priority: TaskPriority = TaskPriority.MINOR
+    assigned_id: Optional[int]
+
+    @field_validator(__field="expired_at", mode="before")
+    @classmethod
+    def expired_at_validate(cls, value):
+        if not value:
+            return datetime.combine(
+                date.today() + timedelta(days=1), datetime.min.time()
+            )
+        return value
