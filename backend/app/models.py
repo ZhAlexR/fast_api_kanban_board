@@ -110,6 +110,7 @@ class Board(Base):
     __tablename__ = "boards"
 
     id = Column(Integer, primary_key=True)
+    name = Column(String(length=63), unique=True)
     description = Column(String(length=255))
 
     teams = relationship(
@@ -147,6 +148,7 @@ class Task(Base):
 
     owner_id = Column(Integer, ForeignKey("users.id"))
     assigned_id = Column(Integer, ForeignKey("users.id"), default=None)
+
     owner = relationship("User", back_populates="owned_tasks", foreign_keys=[owner_id])
     assigned = relationship(
         "User", back_populates="assigned_tasks", foreign_keys=[assigned_id]
