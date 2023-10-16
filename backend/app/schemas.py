@@ -67,9 +67,9 @@ class TeamBase(BaseModel):
 
 
 class TeamCreate(TeamBase):
-    members: list[int] = None
-    boards: list[int] = None
-    projects: list[int] = None
+    members: list[int] = []
+    boards: list[int] = []
+    projects: list[int] = []
 
 
 class Board(BaseModel):
@@ -78,8 +78,8 @@ class Board(BaseModel):
 
 
 class BoardCreate(Board):
-    teams: list[int] = None
-    projects: list[int] = None
+    teams: list[int] = []
+    projects: list[int] = []
 
 
 class BoardList(BaseModel):
@@ -93,8 +93,8 @@ class ProjectBase(BaseModel):
 
 
 class ProjectCreate(ProjectBase):
-    boards: list[int] = None
-    teams: list[int] = None
+    boards: list[int] = []
+    teams: list[int] = []
 
 
 class TaskBase(BaseModel):
