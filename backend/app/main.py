@@ -12,6 +12,7 @@ from backend.app.schemas import (
     Role,
     UserCreate,
     User,
+    TeamCreate,
 )
 from backend.app.services.security import hash_password
 
@@ -76,3 +77,15 @@ def create_user(request: UserCreate, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(new_user)
     return new_user
+
+
+@app.post("/team/", status_code=status.HTTP_201_CREATED)
+def create_team(request: TeamCreate, db: Session = Depends(get_db)):
+    new_team = models.Team(
+        name=request.name,
+        description=request.description,
+    )
+    db.add(new_team)
+    db.commit()
+    db.refresh(new_team)
+    return new_team
