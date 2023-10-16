@@ -49,7 +49,7 @@ class UserCreate(UserBase):
 
 class User(UserBase):
     id: int
-    role: Optional[Role]
+    role: Role = None
 
     class Config:
         from_attributes = True
@@ -67,9 +67,9 @@ class TeamBase(BaseModel):
 
 
 class TeamCreate(TeamBase):
-    members: Optional[int]
-    boards: Optional[int]
-    projects: Optional[int]
+    members: list[int] = None
+    boards: list[int] = None
+    projects: list[int] = None
 
 
 class Board(BaseModel):
@@ -78,8 +78,8 @@ class Board(BaseModel):
 
 
 class BoardCreate(Board):
-    teams: Optional[int]
-    projects: Optional[int]
+    teams: list[int] = None
+    projects: list[int] = None
 
 
 class BoardList(BaseModel):
@@ -93,8 +93,8 @@ class ProjectBase(BaseModel):
 
 
 class ProjectCreate(ProjectBase):
-    boards: Optional[int]
-    teams: Optional[int]
+    boards: list[int] = None
+    teams: list[int] = None
 
 
 class TaskBase(BaseModel):
