@@ -11,8 +11,8 @@ from backend.app.schemas import (
     PermissionList,
     Role,
     UserCreate,
-    User,
     TeamCreate,
+    UserBase,
 )
 from backend.app.services.security import hash_password
 
@@ -65,11 +65,11 @@ def list_permission(db: Session = Depends(get_db)):
     return permission_list
 
 
-@app.post("/user/", status_code=status.HTTP_201_CREATED, response_model=User)
+@app.post("/user/", status_code=status.HTTP_201_CREATED, response_model=UserBase)
 def create_user(request: UserCreate, db: Session = Depends(get_db)):
     hashed_password = hash_password(request.password)
 
-    user_data = dict(request)
+    user_data = request.model_dump()
     user_data["password"] = hashed_password
 
     new_user = models.User(**user_data)
@@ -81,10 +81,7 @@ def create_user(request: UserCreate, db: Session = Depends(get_db)):
 
 @app.post("/team/", status_code=status.HTTP_201_CREATED)
 def create_team(request: TeamCreate, db: Session = Depends(get_db)):
-    new_team = models.Team(
-        name=request.name,
-        description=request.description,
-    )
+    new_team = models.Team(**request.model_dump())
     db.add(new_team)
     db.commit()
     db.refresh(new_team)
