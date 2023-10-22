@@ -6,6 +6,9 @@ class Tags(Enum):
     USER = "User"
     ROLE = "Role"
     PERMISSION = "Permission"
+    TASK = "Task"
+    BOARD = "Board"
+    PROJECT = "Project"
 
 
 tags_metadata = [
@@ -24,5 +27,17 @@ tags_metadata = [
     {
         "name": "Permission",
         "description": "Operation with permission",
+    },
+    {
+        "name": "Task",
+        "description": "Operation with task",
+    },
+    {
+        "name": "Board",
+        "description": "Operation with board",
+    },
+    {
+        "name": "Project",
+        "description": "Operation with project",
     },
 ]

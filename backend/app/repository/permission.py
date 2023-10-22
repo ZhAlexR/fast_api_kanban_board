@@ -13,5 +13,4 @@ def create(request: PermissionCreate, db: Session):
 
 
 def read_all(db: Session):
-    permission_list = db.query(models.Permission).all()
-    return permission_list
+    return db.query(models.Permission).all()
