@@ -1,16 +1,12 @@
 from sqlalchemy.orm import Session
 
-from backend.app import models
-from backend.app.schemas import PermissionCreate
+from backend.app.models import Permission
+from backend.app.repository.base_crud import CRUDBase
+from backend.app.schemas.schemas import PermissionCreate, PermissionUpdate
 
 
-def create(request: PermissionCreate, db: Session):
-    new_permission = models.Permission(name=request.name)
-    db.add(new_permission)
-    db.commit()
-    db.refresh(new_permission)
-    return new_permission
+class CRUDPermission(CRUDBase[Permission, PermissionCreate, PermissionUpdate]):
+    pass
 
 
-def read_all(db: Session):
-    return db.query(models.Permission).all()
+permission = CRUDPermission(Permission)
