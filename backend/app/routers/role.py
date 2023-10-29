@@ -15,6 +15,6 @@ def create_role(request: RoleCreate, db: Session = Depends(get_db)):
     return create(request, db)
 
 
-@router.get("/list", response_model=list[Role])
+@router.get("/", response_model=list[Role])
 def list_roles(db: Session = Depends(get_db)):
     return read_all(db)

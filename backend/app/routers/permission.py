@@ -15,6 +15,6 @@ def create_permission(request: PermissionCreate, db: Session = Depends(get_db)):
     return create(request, db)
 
 
-@router.get("/list", response_model=list[PermissionList])
+@router.get("/", response_model=list[PermissionList])
 def list_permission(db: Session = Depends(get_db)):
     return read_all(db)

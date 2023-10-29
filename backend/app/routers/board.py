@@ -15,6 +15,6 @@ def create_task(request: BoardCreate, db: Session = Depends(get_db)):
     return create(request, db)
 
 
-@router.get("/list", status_code=status.HTTP_200_OK, response_model=list[Board])
+@router.get("/", status_code=status.HTTP_200_OK, response_model=list[Board])
 def list_task(db: Session = Depends(get_db)):
     return read_all(db)
