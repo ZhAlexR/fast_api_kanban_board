@@ -9,7 +9,6 @@ from backend.app.services.security import hash_password
 
 
 class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
-
     def create(self, db: Session, income_entity: UserCreate):
         hashed_password = hash_password(income_entity.password)
 
@@ -23,7 +22,10 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
         return new_user
 
     def update(
-        self, db: Session, *, database_entity: User,
+        self,
+        db: Session,
+        *,
+        database_entity: User,
         income_entity: Union[UserUpdate, Dict[str, Any]]
     ) -> User:
         if isinstance(income_entity, dict):
@@ -32,7 +34,9 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
             update_data = income_entity.model_dump(exclude_unset=True)
         if update_data["password"]:
             update_data["password"] = hash_password(update_data["password"])
-        return super().update(db, database_entity=database_entity, income_entity=update_data)
+        return super().update(
+            db, database_entity=database_entity, income_entity=update_data
+        )
 
 
 user = CRUDUser(User)
