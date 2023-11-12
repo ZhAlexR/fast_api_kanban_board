@@ -18,3 +18,8 @@ def create_role(request: RoleCreate, db: Session = Depends(get_db)):
 @router.get("/", response_model=list[Role])
 def list_roles(db: Session = Depends(get_db)):
     return role.get_all(db)
+
+
+@router.delete("/{id}")
+def delete_role(id_: int, db: Session = Depends(get_db)):
+    return role.remove(db, id_=id_)

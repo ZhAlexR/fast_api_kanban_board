@@ -9,6 +9,7 @@ class Tags(Enum):
     TASK = "Task"
     BOARD = "Board"
     PROJECT = "Project"
+    LOGIN = "Login"
 
 
 tags_metadata = [
@@ -39,5 +40,9 @@ tags_metadata = [
     {
         "name": "Task",
         "description": "Operation with task",
+    },
+    {
+        "name": "Login",
+        "description": "Operation with login",
     },
 ]

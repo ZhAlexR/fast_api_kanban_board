@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from backend.app.routers import user, permission, team, role, board, project, task
+from backend.app.routers import user, permission, team, role, board, project, task, login
 from backend.app.services.tags import tags_metadata
 
 app = FastAPI(openapi_tags=tags_metadata)
@@ -17,3 +17,4 @@ app.include_router(router=role.router)
 app.include_router(router=board.router)
 app.include_router(router=project.router)
 app.include_router(router=task.router)
+app.include_router(router=login.router)
