@@ -1,12 +1,10 @@
-from sqlalchemy.orm import Session
+from backend.app.models import Team
+from backend.app.repository.base_crud import CRUDBase
+from backend.app.schemas.schemas import TeamCreate, TeamUpdate
 
-from backend.app import models
-from backend.app.schemas import TeamCreate
+
+class CRUDTeam(CRUDBase[Team, TeamCreate, TeamUpdate]):
+    pass
 
 
-def create(request: TeamCreate, db: Session):
-    new_team = models.Team(**request.model_dump())
-    db.add(new_team)
-    db.commit()
-    db.refresh(new_team)
-    return new_team
+team = CRUDTeam(Team)

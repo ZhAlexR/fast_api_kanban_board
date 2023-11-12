@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta, date
 
-from pydantic import BaseModel, constr, EmailStr, validator, field_validator
+from pydantic import BaseModel, constr, EmailStr, field_validator
 from typing import List, Optional
 
 from backend.app.models import TaskPriority
@@ -11,6 +11,10 @@ class PermissionBase(BaseModel):
 
 
 class PermissionCreate(PermissionBase):
+    pass
+
+
+class PermissionUpdate(PermissionBase):
     pass
 
 
@@ -26,6 +30,11 @@ class RoleBase(BaseModel):
 
 
 class RoleCreate(RoleBase):
+    permissions: List[int] = []
+
+
+class RoleUpdate(BaseModel):
+    name: Optional[constr(min_length=1, max_length=255)] = None
     permissions: List[int] = []
 
 
@@ -47,6 +56,12 @@ class UserCreate(UserBase):
     password: constr(min_length=1)
 
 
+class UserUpdate(BaseModel):
+    name: Optional[constr(min_length=1, max_length=255)] = None
+    surname: Optional[constr(min_length=1, max_length=255)] = None
+    password: Optional[constr(min_length=1)] = None
+
+
 class User(UserBase):
     id: int
     role: Role = None
@@ -62,8 +77,8 @@ class UserList(BaseModel):
 
 
 class TeamBase(BaseModel):
-    name: str
-    description: str
+    name: Optional[str] = None
+    description: Optional[str] = None
 
 
 class TeamCreate(TeamBase):
@@ -72,14 +87,25 @@ class TeamCreate(TeamBase):
     projects: list[int] = []
 
 
-class Board(BaseModel):
-    name: str
-    description: str
+class TeamUpdate(TeamBase):
+    members: Optional[list[int]] = None
+    boards: Optional[list[int]] = None
+    projects: Optional[list[int]] = None
 
 
-class BoardCreate(Board):
+class BoardBase(BaseModel):
+    name: Optional[str] = None
+    description: Optional[str] = None
+
+
+class BoardCreate(BoardBase):
     teams: list[int] = []
     projects: list[int] = []
+
+
+class BoardUpdate(BoardBase):
+    teams: Optional[list[int]] = None
+    projects: Optional[list[int]] = None
 
 
 class BoardList(BaseModel):
@@ -88,13 +114,18 @@ class BoardList(BaseModel):
 
 
 class ProjectBase(BaseModel):
-    name: str
-    description: str
+    name: Optional[str] = None
+    description: Optional[str] = None
 
 
 class ProjectCreate(ProjectBase):
     boards: list[int] = []
     teams: list[int] = []
+
+
+class ProjectUpdate(ProjectBase):
+    boards: Optional[list[int]] = None
+    teams: Optional[list[int]] = None
 
 
 class TaskBase(BaseModel):
@@ -107,11 +138,17 @@ class TaskCreate(TaskBase):
     priority: TaskPriority = TaskPriority.MINOR
     assigned_id: Optional[int]
 
-    @field_validator(__field="expired_at", mode="before")
     @classmethod
+    @field_validator(__field="expired_at", mode="before")
     def expired_at_validate(cls, value):
         if not value:
             return datetime.combine(
                 date.today() + timedelta(days=1), datetime.min.time()
             )
         return value
+
+
+class TaskUpdate(BaseModel):
+    expired_at: Optional[str] = None
+    priority: Optional[TaskPriority] = None
+    assigned_id: Optional[int] = None
