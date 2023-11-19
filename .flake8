@@ -1,53 +1,10 @@
 [flake8]
-
-# Maximum line length (you can adjust this to your preferred line length)
-max-line-length = 80
-
-# Ignore some commonly ignored rules for FastAPI and async code
-ignore = E501,W503
-
-# Exclude certain directories or files from linting (adjust as needed)
+inline-quotes = "
+ignore = E203, E266, W503, N807, N818, F401, VNE003
+max-line-length = 120
+max-complexity = 18
+select = B,C,E,F,W,T4,B9,Q0,N8,VNE
 exclude =
-    __pycache__,
-    .git,
+    **migrations
     venv
-
-# Show statistics about errors, warnings, and refactoring opportunities
-statistics = True
-
-# Enable error checking for type hinting (requires Python 3.6+)
-enable-extensions = G
-
-# List of error codes to be considered as warnings
-per-file-ignores =
-    # Ignore typing-related errors in __init__.py files
-    *__init__.py:F401
-
-# Plugins (you can add more plugins here if needed)
-# plugins =
-#     my_custom_flake8_plugin
-
-# Show source code for each error or warning
-show-source = True
-
-# Enable strict checking for docstrings (requires flake8-docstrings plugin)
-docstring-convention = google
-
-# Configuration for the McCabe complexity checker (optional)
-# mccabe-complexity = 10
-
-# Configuration for the pycodestyle (formerly called pep8) checker (optional)
-# [pycodestyle]
-# max-line-length = 120
-# ...
-
-# Configuration for the pyflakes checker (optional)
-# [pyflakes]
-# ...
-
-# Configuration for additional plugins (if you use any)
-# [my_custom_flake8_plugin]
-# option1 = value1
-# option2 = value2
-
-inline-quotes = double
+    tests
