@@ -36,7 +36,7 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
             update_data = income_entity
         else:
             update_data = income_entity.model_dump(exclude_unset=True)
-        if update_data["password"]:
+        if update_data.get("password"):
             update_data["password"] = hash_password(update_data["password"])
         return super().update(
             db, database_entity=database_entity, income_entity=update_data
