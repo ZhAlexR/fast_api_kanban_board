@@ -17,7 +17,9 @@ async def create_user(request: UserCreate, db: Session = Depends(get_db)):
 
 
 @router.put(path="/", status_code=status.HTTP_200_OK)
-def update_user(request: UserUpdate, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
+def update_user(
+        request: UserUpdate, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)
+):
     return user.update(db, database_entity=current_user, income_entity=request)
 
 

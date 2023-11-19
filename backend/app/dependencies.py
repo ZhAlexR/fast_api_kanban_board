@@ -29,4 +29,3 @@ def get_current_user(
     if not current_user:
         raise HTTPException(status_code=404, detail="User not found")
     return current_user
-
